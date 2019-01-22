@@ -42,17 +42,17 @@ EMPTY_FILLER = 1000
 # which is not guranteed
 def load_train_hdf(path):
     return pd.concat([
-        pd.read_hdf(os.path.join(path, "train_part_%i_v2.hdf" % i))
+        pd.read_hdf(os.path.join(path, "train_part_%i.hdf" % i))
         for i in (1, 2)], axis=0, ignore_index=True)
 
 
 def load_data_csv(path, feature_columns):
     train = pd.concat([
-        pd.read_csv(os.path.join(path, "train_part_%i_v2.csv.gz" % i),
+        pd.read_csv(os.path.join(path, "train_part_%i.csv.gz" % i),
                     usecols= [ID_COLUMN] + feature_columns + TRAIN_COLUMNS,
                     index_col=ID_COLUMN)
         for i in (1, 2)], axis=0, ignore_index=True)
-    test = pd.read_csv(os.path.join(path, "test_public_v2.csv.gz"),
+    test = pd.read_csv(os.path.join(path, "test_public.csv.gz"),
                        usecols=[ID_COLUMN] + feature_columns, index_col=ID_COLUMN)
     return train, test
 
@@ -65,7 +65,7 @@ def load_full_train_csv(path):
     converters = dict(zip(FOI_COLUMNS, repeat(parse_array)))
     types = dict(zip(SIMPLE_FEATURE_COLUMNS, repeat(np.float32)))
     train = pd.concat([
-        pd.read_csv(os.path.join(path, "train_part_%i_v2.csv.gz" % i),
+        pd.read_csv(os.path.join(path, "train_part_%i.csv.gz" % i),
                     usecols= [ID_COLUMN]+SIMPLE_FEATURE_COLUMNS+FOI_COLUMNS+ TRAIN_COLUMNS,
                     index_col=ID_COLUMN)
         for i in (1, 2)], axis=0, ignore_index=True)
@@ -74,7 +74,7 @@ def load_full_train_csv(path):
 def load_full_test_csv(path):
     converters = dict(zip(FOI_COLUMNS, repeat(parse_array)))
     types = dict(zip(SIMPLE_FEATURE_COLUMNS, repeat(np.float32)))
-    test = pd.read_csv(os.path.join(path, "test_public_v2.csv.gz"),
+    test = pd.read_csv(os.path.join(path, "test_public.csv.gz"),
                        index_col="id", converters=converters,
                        dtype=types,
                        usecols=[ID_COLUMN]+SIMPLE_FEATURE_COLUMNS+FOI_COLUMNS)
